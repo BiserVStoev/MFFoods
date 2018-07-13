@@ -61,3 +61,16 @@ body {
 .register-container {
   margin: 0 auto;
 }
+
+.auth-container {
+  width: 50% !important;
+}
+
+#registerTitle {
+  text-align: center;
+}
+
+.validation-error{
+  color:red;
+  text-align: center;
+}

@@ -5,8 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 class Header extends Component {
     render() {
-        const { loggedIn, onLogout } = this.props;
-
+        const { loggedIn } = this.props;
         return (
             <header>
                 <Navbar collapseOnSelect className='navbar-nowrap-fix'>
@@ -14,7 +13,7 @@ class Header extends Component {
                         <Navbar.Brand >
                             <NavLink activeClassName='none' to='/'>MF Foods</NavLink>
                         </Navbar.Brand>
-                        <Navbar.Toggle/>
+                        <Navbar.Toggle />
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav pullRight>
@@ -23,7 +22,9 @@ class Header extends Component {
                             </LinkContainer>
                             {
                                 loggedIn &&
-                                <a href='javascript:void(0)' onClick={onLogout}>Logout</a>
+                                <LinkContainer exact activeClassName='active' to="/logout" >
+                                    <NavItem eventKey={9999}>Logout</NavItem>
+                                </LinkContainer>
                             }
                             {
                                 !loggedIn &&

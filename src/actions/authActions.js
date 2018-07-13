@@ -1,41 +1,62 @@
-import { REGISTER_SUCCESS, LOGIN_SUCCESS, REDIRECTED } from '../actions/actionTypes';
+import { REGISTER_SUCCESS, REGISTER_ERROR, LOGIN_SUCCESS, LOGIN_ERROR, REDIRECTED } from '../actions/actionTypes';
 import { login, register } from '../api/remote';
 
 function registerSuccess() {
     return {
         type: REGISTER_SUCCESS
     };
-}
+};
+
+function registerError(message) {
+    return {
+        type: REGISTER_ERROR,
+        message: message
+    };
+};
 
 function loginSuccess() {
     return {
         type: LOGIN_SUCCESS
     };
-}
+};
+
+function loginError(message) {
+    return {
+        type: LOGIN_ERROR,
+        message: message
+    };
+};
 
 export function redirect() {
     return {
         type: REDIRECTED
     };
-}
+};
 
-function registerAction(name, email, password) {
+function registerAction(username, email, password) {
     return (dispatch) => {
-        return register(name, email, password)
+        return register(username, email, password)
             .then(json => {
-                if (json.success) {
-                    dispatch(registerSuccess());
+                if(json.error) {
+                    dispatch(registerError(json.description));
+                    return;
                 }
+                dispatch(registerSuccess());
             });
     };
-}
+};
 
-function loginAction(email, password) {
+function loginAction(username, password) {
     return (dispatch) => {
-        return login(email, password)
+        return login(username, password)
             .then(json => {
-                localStorage.setItem('authToken', json.token);
-                localStorage.setItem('user', json.user.name);
+                console.log(json);
+                if(json.error) {
+                    dispatch(loginError(json.description));
+                    return;
+                }
+                localStorage.setItem('authToken', json._kmd.authtoken);
+                localStorage.setItem('user', json.username);
                 dispatch(loginSuccess());
             });
     };
@@ -45,6 +66,6 @@ function logoutAction() {
     return (dispatch) => {
         localStorage.clear();
     };
-}
+};
 
 export { registerAction, loginAction, logoutAction };

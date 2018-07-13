@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
-import Input from '../common/Input';
+import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { loginAction, redirect } from '../../actions/authActions';
+
+const minPasswordLength = 5;
 
 class LoginPage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            email: '',
-            password: ''
+            username: '',
+            password: '',
+            errors: [],
+            errorMessage: ''
         };
 
         this.onChangeHandler = this.onChangeHandler.bind(this);
@@ -22,10 +26,28 @@ class LoginPage extends Component {
 
     onSubmitHandler(e) {
         e.preventDefault();
-        this.props.login(this.state.email, this.state.password);
+        let hasErrors = false;
+        const validationMessages = [];
+        if (this.state.username.trim() === '') {
+            validationMessages.push('Username cannot be empty.');
+            hasErrors = true;
+        }
+        if (this.state.password.length < minPasswordLength) {
+            validationMessages.push('Password must be at least 5 symbols long.');
+            hasErrors = true;
+        }
+        this.setState((prevState) => ({ errors: validationMessages }));
+        if (!hasErrors) {
+            this.props.login(this.state.username, this.state.password);
+        }
     }
 
     componentWillReceiveProps(newProps) {
+        console.log(newProps)
+        if(newProps.errorMessage){
+            this.setState({errorMessage: newProps.errorMessage})
+        }
+        
         if (newProps.loginSuccess) {
             this.props.redirect();
             this.props.history.push('/');
@@ -35,22 +57,43 @@ class LoginPage extends Component {
     render() {
         return (
             <div className="container">
-                <h1>Login</h1>
+                <h1 id='registerTitle'>Login</h1>
+                {this.state.errorMessage ? <h2 className='validation-error'>{this.state.errorMessage}</h2> : null}
+                {
+                    this.state.errors.length > 0 
+                    ? 
+                    this.state.errors.map((e, i) => {
+                        return <p key={i} className='validation-error'>{e}</p>;
+                    }) 
+                    :
+                    null
+                }
                 <form onSubmit={this.onSubmitHandler}>
-                    <Input
-                        name="email"
-                        value={this.state.email}
-                        onChange={this.onChangeHandler}
-                        label="E-mail"
+                    <FormGroup controlId='username'>
+                        <ControlLabel>Username</ControlLabel>
+                        <FormControl
+                            name='username'
+                            type="text"
+                            value={this.state.username}
+                            placeholder="Enter username"
+                            onChange={this.onChangeHandler}
+                        />
+                    </FormGroup>
+                    <FormGroup controlId='password'>
+                        <ControlLabel>Password</ControlLabel>
+                        <FormControl
+                            name='password'
+                            type="password"
+                            value={this.state.password}
+                            placeholder="Enter text"
+                            onChange={this.onChangeHandler}
+                        />
+                    </FormGroup>
+                    <FormControl
+                        className='btn btn-default'
+                        type="submit"
+                        value='Submit'
                     />
-                    <Input
-                        name="password"
-                        type="password"
-                        value={this.state.password}
-                        onChange={this.onChangeHandler}
-                        label="Password"
-                    />
-                    <input type="submit" value="Login" />
                 </form>
             </div>
         );
@@ -59,7 +102,8 @@ class LoginPage extends Component {
 
 function mapState(state) {
     return {
-        loginSuccess: state.login.success
+        loginSuccess: state.login.success,
+        errorMessage: state.login.message
     };
 }
 

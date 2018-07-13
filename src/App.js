@@ -7,6 +7,7 @@ import LoginPage from './components/Auth/LoginPage';
 import HomePage from './components/HomePage/HomePage';
 import { connect } from 'react-redux';
 import { logoutAction } from './actions/authActions';
+import LogoutPage from './components/Auth/LogoutPage';
 
 class App extends Component {
     constructor(props) {
@@ -28,6 +29,9 @@ class App extends Component {
                    <Route exact path="/" component={HomePage} />
                    <Route exact path="/login" component={LoginPage} />
                    <Route exact path="/register" component={RegisterPage} />
+                   <Route exact path="/logout" render={() => {
+                       return <LogoutPage onLogout={this.onLogout}/>
+                   }} />
                </Switch>
                <Footer/>
            </div>
