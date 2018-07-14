@@ -27,7 +27,7 @@ body {
   border-top: 1px solid #e5e5e5;
 }
 
-.home-section-title {
+.home-section-title, #new-recipe-title {
   text-align: center;
 }
 
@@ -73,4 +73,122 @@ body {
 .validation-error{
   color:red;
   text-align: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.recipe-info {
+  margin-top: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  background-color: #f9f9f9;
+  -webkit-box-shadow: 0 1px 0 rgba(0,0,0,.15);
+  -moz-box-shadow: 0 1px 0 rgba(0,0,0,.15);
+  box-shadow: 0 1px 0 rgba(0,0,0,.15);
+}
+
+.ingredients-list dl {
+  display: inline-block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+.ingredients-list dt {
+  width: 15%;
+  float: left;
+  margin: 0 0 8px;
+  padding: 0 10px;
+  font-size: 13px;
+  line-height: 37px;
+  background: #f9f9f9;
+  -webkit-box-shadow: 0 1px 0 rgba(0,0,0,.15);
+  -moz-box-shadow: 0 1px 0 rgba(0,0,0,.15);
+  box-shadow: 0 1px 0 rgba(0,0,0,.15);
+}
+.ingredients-list dd {
+  width: 85%;
+  float: left;
+  margin: 0 0 8px;
+  padding: 0 15px;
+  font-size: 13px;
+  line-height: 37px;
+  font-weight: 600;
+  background: #a44c9f;
+  color: #f9f9f9;
+  -webkit-box-shadow: 0 1px 0 rgba(0,0,0,.15);
+  -moz-box-shadow: 0 1px 0 rgba(0,0,0,.15);
+  box-shadow: 0 1px 0 rgba(0,0,0,.15);
+}
+
+.recipe-instructions ol {
+  counter-reset: li;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 4em;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+
+.recipe-instructions ol ol {
+  margin: 0 0 0 2em;
+}
+.recipe-instructions li {
+  position: relative;
+  display: block;
+  padding: .4em .4em .4em .8em;
+  *padding: .4em;
+  margin: .5em 0 .5em 2.5em;
+  background: #f9f9f9;
+  color: #222;
+  text-decoration: none;
+  transition: all .3s ease-out;
+  -webkit-box-shadow: 0 1px 0 rgba(0,0,0,.15);
+  -moz-box-shadow: 0 1px 0 rgba(0,0,0,.15);
+  box-shadow: 0 1px 0 rgba(0,0,0,.15);
+}
+.recipe-instructions li:hover{
+  background: #f1f1f1;
+}
+.recipe-instructions li:before{
+  content: counter(li);
+  counter-increment: li;
+  position: absolute;
+  left: -2.5em;
+  top: 50%;
+  margin-top: -1em;
+  background: #a44c9f;
+  height: 2em;
+  width: 2em;
+  line-height: 2em;
+  text-align: center;
+  font-weight: bold;
+  color: #f9f9f9;
+}
+.recipe-instructions li:after{
+  position: absolute;
+  content: '';
+  border: .5em solid transparent;
+  left: -1em;
+  top: 50%;
+  margin-top: -.5em;
+  transition: all .3s ease-out;
+}
+.recipe-instructions li:hover:after{
+  left: -.5em;
+  border-left-color: #a44c9f;
+}
+
+.secret-wrapper {
+  margin-top: 100px;
+  text-align: center;
+}
+
+#master-secret-label {
+  font-size: 25px;
+}
+
+.send-secret-btn {
+  margin-top: 15px;
 }

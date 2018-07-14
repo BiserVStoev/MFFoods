@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { registerAction, redirect } from '../../actions/authActions';
-
-const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const minPasswordLength = 5;
-const strongPasswordLength = 10;
+import { minPasswordLength, strongPasswordLength, emailRegex } from '../../constants/dataConstants';
 
 class RegisterPage extends Component {
     constructor(props) {
@@ -19,16 +16,13 @@ class RegisterPage extends Component {
             errors: [],
             errorMessage: ''
         };
-
-        this.onChangeHandler = this.onChangeHandler.bind(this);
-        this.onSubmitHandler = this.onSubmitHandler.bind(this);
     }
 
-    onChangeHandler(e) {
+    onChangeHandler = (e) => {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    onSubmitHandler(e) {
+    onSubmitHandler = (e) => {
         e.preventDefault();
         const validationMessages = [];
         let hasErrors = false;
@@ -41,7 +35,7 @@ class RegisterPage extends Component {
             hasErrors = true;
         }
         if (this.getPasswordValidationState('password') === 'error' || this.getPasswordValidationState('password') === null) {
-            validationMessages.push('Password must be at least 5 symbols long.');
+            validationMessages.push(`Password must be at least ${minPasswordLength} symbols long.`);
             hasErrors = true;
         }
         if (this.state.password !== this.state.repeat) {
@@ -79,8 +73,8 @@ class RegisterPage extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if(newProps.errorMessage){
-            this.setState({errorMessage: newProps.errorMessage})
+        if (newProps.errorMessage) {
+            this.setState({ errorMessage: newProps.errorMessage })
         }
 
         if (newProps.registerSuccess) {
@@ -91,26 +85,26 @@ class RegisterPage extends Component {
 
     render() {
         return (
-            <div className="container auth-container">
+            <div className='container auth-container'>
                 <h1 id='registerTitle'>Register</h1>
                 {this.state.errorMessage ? <h2 className='validation-error'>{this.state.errorMessage}</h2> : null}
                 {
-                    this.state.errors.length > 0 
-                    ? 
-                    this.state.errors.map((e, i) => {
-                        return <p key={i} className='validation-error'>{e}</p>;
-                    }) 
-                    :
-                    null
+                    this.state.errors.length > 0
+                        ?
+                        this.state.errors.map((e, i) => {
+                            return <p key={i} className='validation-error'>{e}</p>;
+                        })
+                        :
+                        null
                 }
                 <form onSubmit={this.onSubmitHandler}>
                     <FormGroup controlId='username'>
                         <ControlLabel>Username</ControlLabel>
                         <FormControl
                             name='username'
-                            type="text"
+                            type='text'
                             value={this.state.username}
-                            placeholder="Enter username"
+                            placeholder='Enter username'
                             onChange={this.onChangeHandler}
                         />
                     </FormGroup>
@@ -120,7 +114,7 @@ class RegisterPage extends Component {
                             name='email'
                             type="email"
                             value={this.state.email}
-                            placeholder="Enter email"
+                            placeholder='Enter email'
                             onChange={this.onChangeHandler}
                         />
                     </FormGroup>
@@ -130,7 +124,7 @@ class RegisterPage extends Component {
                             name='password'
                             type="password"
                             value={this.state.password}
-                            placeholder="Enter text"
+                            placeholder='Enter password'
                             onChange={this.onChangeHandler}
                         />
                         <FormControl.Feedback />
@@ -139,9 +133,9 @@ class RegisterPage extends Component {
                         <ControlLabel>Repeat Password</ControlLabel>
                         <FormControl
                             name='repeat'
-                            type="password"
+                            type='password'
                             value={this.state.repeat}
-                            placeholder="Enter text"
+                            placeholder='Repeat password'
                             onChange={this.onChangeHandler}
                         />
                         <FormControl.Feedback />
@@ -155,20 +149,20 @@ class RegisterPage extends Component {
             </div>
         );
     }
-}
+};
 
 function mapState(state) {
     return {
         registerSuccess: state.register.success,
         errorMessage: state.register.message
     };
-}
+};
 
 function mapDispatch(dispatch) {
     return {
         register: (username, email, password) => dispatch(registerAction(username, email, password)),
         redirect: () => dispatch(redirect())
     };
-}
+};
 
 export default connect(mapState, mapDispatch)(RegisterPage);

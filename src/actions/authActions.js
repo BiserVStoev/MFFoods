@@ -1,4 +1,9 @@
-import { REGISTER_SUCCESS, REGISTER_ERROR, LOGIN_SUCCESS, LOGIN_ERROR, REDIRECTED } from '../actions/actionTypes';
+import { 
+    REGISTER_SUCCESS, 
+    REGISTER_ERROR, 
+    LOGIN_SUCCESS, 
+    LOGIN_ERROR, REDIRECTED 
+} from '../actions/actionTypes';
 import { login, register } from '../api/remote';
 
 function registerSuccess() {
@@ -50,13 +55,15 @@ function loginAction(username, password) {
     return (dispatch) => {
         return login(username, password)
             .then(json => {
-                console.log(json);
                 if(json.error) {
                     dispatch(loginError(json.description));
                     return;
                 }
                 localStorage.setItem('authToken', json._kmd.authtoken);
                 localStorage.setItem('user', json.username);
+                localStorage.setItem('_id', json._id);
+                localStorage.setItem('email', json.email);
+                localStorage.setItem('roles', json.roles);
                 dispatch(loginSuccess());
             });
     };

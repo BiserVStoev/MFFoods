@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { loginAction, redirect } from '../../actions/authActions';
-
-const minPasswordLength = 5;
+import { minPasswordLength } from '../../constants/dataConstants';
 
 class LoginPage extends Component {
     constructor(props) {
@@ -33,7 +32,7 @@ class LoginPage extends Component {
             hasErrors = true;
         }
         if (this.state.password.length < minPasswordLength) {
-            validationMessages.push('Password must be at least 5 symbols long.');
+            validationMessages.push(`Password must be at least ${minPasswordLength} symbols long.`);
             hasErrors = true;
         }
         this.setState((prevState) => ({ errors: validationMessages }));
@@ -43,7 +42,6 @@ class LoginPage extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        console.log(newProps)
         if(newProps.errorMessage){
             this.setState({errorMessage: newProps.errorMessage})
         }
@@ -56,7 +54,7 @@ class LoginPage extends Component {
 
     render() {
         return (
-            <div className="container">
+            <div className='container'>
                 <h1 id='registerTitle'>Login</h1>
                 {this.state.errorMessage ? <h2 className='validation-error'>{this.state.errorMessage}</h2> : null}
                 {
@@ -73,9 +71,9 @@ class LoginPage extends Component {
                         <ControlLabel>Username</ControlLabel>
                         <FormControl
                             name='username'
-                            type="text"
+                            type='text'
                             value={this.state.username}
-                            placeholder="Enter username"
+                            placeholder='Enter username'
                             onChange={this.onChangeHandler}
                         />
                     </FormGroup>
@@ -85,33 +83,33 @@ class LoginPage extends Component {
                             name='password'
                             type="password"
                             value={this.state.password}
-                            placeholder="Enter text"
+                            placeholder='Enter password'
                             onChange={this.onChangeHandler}
                         />
                     </FormGroup>
                     <FormControl
                         className='btn btn-default'
-                        type="submit"
+                        type='submit'
                         value='Submit'
                     />
                 </form>
             </div>
         );
     }
-}
+};
 
 function mapState(state) {
     return {
         loginSuccess: state.login.success,
         errorMessage: state.login.message
     };
-}
+};
 
 function mapDispatch(dispatch) {
     return {
         login: (email, password) => dispatch(loginAction(email, password)),
         redirect: () => dispatch(redirect())
     };
-}
+};
 
 export default connect(mapState, mapDispatch)(LoginPage);

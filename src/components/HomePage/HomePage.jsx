@@ -1,88 +1,65 @@
 import React, { Component } from 'react';
-import { Jumbotron, Grid, Row, Col } from 'react-bootstrap';
+import { Jumbotron, Grid, Row } from 'react-bootstrap';
+import ShortRecipe from '../Recipe/ShortRecipe';
+import { getMostRecentApprovedRecipesAction } from '../../actions/recipeActions';
+import { connect } from 'react-redux';
 
-export default class HomePage extends Component {
+class HomePage extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            mostRecentRecipes: []
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.mostRecentRecipes) {
+            this.setState({ mostRecentRecipes: nextProps.mostRecentRecipes });
+        }
+    }
+
+    componentDidMount() {
+        if (localStorage.getItem('authToken') != null) {
+            this.props.get();
+        }
+    }
+
     render() {
         return (
             <Grid fluid>
                 <Jumbotron>
                     <img id='recipes-banner' alt='recipes-banner' src='/recipes-banner.jpg' />
                 </Jumbotron>
-                <section>
-                    <h2 className='home-section-title'>Most Liked Foods</h2>
-                    <Row>
-                        <Col md={3} className='home-recipe-container'>
-                            <img alt='food' className='recipe-home-picture' src='https://hips.hearstapps.com/del.h-cdn.co/assets/17/04/1024x512/landscape-1485748477-caprese-chicken.jpg' />
-                            <div>
-                                <img alt='like-counter' className='like-counter' src='/recipe-like.jpg' />1
-                                <h3 className='home-recipe-short-title'>Best food recipe ever.</h3>
-                            </div>
-                            <p className='recipe-short-description'>Loremipsum Loremips umLoremipsum Loremip sumLoremipsu m Loremipsum Loremips umLoremipsum Loremip sumLoremipsu m Loremipsum Loremip</p>
-                        </Col>
-                        <Col md={3} className='home-recipe-container'>
-                            <img alt='food' className='recipe-home-picture' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFxaRE14NiFdXzFWNRu1FYbdNztC8bJvPGIUQkdbEG4NKcA5-Znw' />
-                            <div>
-                                <img alt='like-counter' className='like-counter' src='/recipe-like.jpg' />1
-                                <h3 className='home-recipe-short-title'>Best food recipe ever.</h3>
-                            </div>
-                            <p className='recipe-short-description'>Loremipsum Loremips umLoremipsum Loremip sumLoremipsu m </p>
-                        </Col>
-                        <Col md={3} className='home-recipe-container'>
-                            <img alt='food' className='recipe-home-picture' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdd5SRFZV6yJRO-ybp4REhG1z2R2qX1vNcYdJ3zsa7T-KupW48' />
-                            <div>
-                                <img alt='like-counter' className='like-counter' src='/recipe-like.jpg' />1
-                                <h3 className='home-recipe-short-title'>Best food recipe ever.</h3>
-                            </div>
-                            <p className='recipe-short-description'>Loremipsum Loremips umLoremipsum Loremip sumLoremipsu m </p>
-                        </Col>
-                        <Col md={3} className='home-recipe-container'>
-                            <img alt='food' className='recipe-home-picture' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR7DFit_dQNIkM4wyCW0kbxpg-ZOhBWSpGU2P2ObgTK2eswLtXVA' />
-                            <div>
-                                <img alt='like-counter' className='like-counter' src='/recipe-like.jpg' />1
-                                <h3 className='home-recipe-short-title'>Best food recipe ever.</h3>
-                            </div>
-                            <p className='recipe-short-description'>Loremipsum Loremips umLoremipsum Loremip sumLoremipsu m </p>
-                        </Col>
-                    </Row>
-                </section>
-                <section>
-                    <h2 className='home-section-title'>Most Recent Foods</h2>
-                    <Row>
-                        <Col md={3} className='home-recipe-container'>
-                            <img alt='food' className='recipe-home-picture' src='https://hips.hearstapps.com/del.h-cdn.co/assets/17/04/1024x512/landscape-1485748477-caprese-chicken.jpg' />
-                            <div>
-                                <img alt='like-counter' className='like-counter' src='/recipe-like.jpg' />1
-                                <h3 className='home-recipe-short-title'>Best food recipe ever.</h3>
-                            </div>
-                            <p className='recipe-short-description'>Loremipsum Loremips umLoremipsum Loremip sumLoremipsu m </p>
-                        </Col>
-                        <Col md={3} className='home-recipe-container'>
-                            <img alt='food' className='recipe-home-picture' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFxaRE14NiFdXzFWNRu1FYbdNztC8bJvPGIUQkdbEG4NKcA5-Znw' />
-                            <div>
-                                <img alt='like-counter' className='like-counter' src='/recipe-like.jpg' />1
-                                <h3 className='home-recipe-short-title'>Best food recipe ever.</h3>
-                            </div>
-                            <p className='recipe-short-description'>Loremipsum Loremips umLoremipsum Loremip sumLoremipsu m </p>
-                        </Col>
-                        <Col md={3} className='home-recipe-container'>
-                            <img alt='food' className='recipe-home-picture' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdd5SRFZV6yJRO-ybp4REhG1z2R2qX1vNcYdJ3zsa7T-KupW48' />
-                            <div>
-                                <img alt='like-counter' className='like-counter' src='/recipe-like.jpg' />1
-                                <h3 className='home-recipe-short-title'>Best food recipe ever.</h3>
-                            </div>
-                            <p className='recipe-short-description'>Loremipsum Loremips umLoremipsum Loremip sumLoremipsu m </p>
-                        </Col>
-                        <Col md={3} className='home-recipe-container'>
-                            <img alt='food' className='recipe-home-picture' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR7DFit_dQNIkM4wyCW0kbxpg-ZOhBWSpGU2P2ObgTK2eswLtXVA' />
-                            <div>
-                                <img alt='like-counter' className='like-counter' src='/recipe-like.jpg' />1
-                                <h3 className='home-recipe-short-title'>Best food recipe ever.</h3>
-                            </div>
-                            <p className='recipe-short-description'>Loremipsum Loremips umLoremipsum Loremip sumLoremipsu m </p>
-                        </Col>
-                    </Row>
-                </section>
+                {
+                    localStorage.getItem('authToken') != null
+                    &&
+                    <section>
+                        <h2 className='home-section-title'>Most Recently Added Foods</h2>
+                        <Row>
+                            {
+                                this.state.mostRecentRecipes.map(r => {
+                                    return <ShortRecipe isInHome key={r._id} {...r} />
+                                })}
+                        </Row>
+                    </section>
+                }
             </Grid>
         );
     }
 };
+
+
+function mapState(state) {
+    return {
+        mostRecentRecipes: state.home.mostRecentRecipes
+    };
+};
+
+function mapDispatch(dispatch) {
+    return {
+        get: () => dispatch(getMostRecentApprovedRecipesAction())
+    };
+};
+
+export default connect(mapState, mapDispatch)(HomePage);;
